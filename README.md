@@ -8,7 +8,7 @@ How do we want to test this?
 2. `development with mocks`
 3. `test net`
 
-- brownie add mainnet-for
+- brownie add mainnet-fork
 ```
 brownie networks add development mainnet-fork cmd=ganache-cli host=http://127.0.0.1 fork=<ALCHEMY http key> accounts=10 mnemonic=brownie port=8545
 ```
