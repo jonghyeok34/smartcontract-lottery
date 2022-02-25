@@ -13,6 +13,12 @@ LOCAL_BLOCKCHAIN_ENVIRONMENTS = ["development", "ganache-local"]
 DECIMALS = 8
 STARTING_PRICE = 2000 * (10 ** DECIMALS)
 
+GAS_LIMIT_WEI_DICT = {
+    "rinkeby": 20000000,
+    "ganache-local": 6721975
+}
+GAS_LIMIT_WEI = 29000000 if network.show_active() =="rinkeby" else 6721975
+
 
 def get_account(index=None, id=None):
     # accounts[0]
@@ -83,10 +89,10 @@ def deploy_mocks(decimals=DECIMALS, initial_value=INITIAL_VALUE):
 def fund_with_link(contract_address, account=None, link_token=None, amount=100000000000000000 ): # 0.01 
     account = account if account else get_account()
     link_token = link_token if link_token else get_contract("link_token")
+    tx = link_token.transfer(contract_address, amount, {"from": account, "gas_limit": GAS_LIMIT_WEI, "allow_revert":True})
     # # interface knows abi automatically
     # link_token_contract = interface.LinkTokenInterface(link_token.address)
     # tx = link_token_contract.transfer(contract_address, amount, {"from": account})
-    tx = link_token.transfer(contract_address, amount, {"from": account})
     tx.wait(1)
     print("Fund contract!")
     return tx
